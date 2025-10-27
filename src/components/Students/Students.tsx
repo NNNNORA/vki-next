@@ -16,11 +16,15 @@ const Students = (): React.ReactElement => {
 
   const onDeleteHandler = (studentId: number): void => {
     if (confirm('Удалить студента?')) {
+      debugger;
+      console.log('onDeleteHandler',studentId);
       deleteStudentMutate(studentId);
     }
   };
 
-  const onAddHandler = (studentFormField: FormFields): void => {
+   const onAddHandler = (studentFormField: FormFields): void => {
+    console.log('Добавление студента', studentFormField);
+    debugger;
   const nextId = students.length > 0 
     ? Math.max(...students.map(s => s.id)) + 1 
     : 1;

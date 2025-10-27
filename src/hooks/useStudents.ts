@@ -44,14 +44,21 @@ const useStudents = (): StudentsHookInterface => {
       // обновляем данные в TanStackQuery
       queryClient.setQueryData<StudentInterface[]>(['students'], updatedStudents);
 
+      console.log('deleteStudentMutate onMutate', previousStudents, updatedStudents);
+      debugger;
+
       return { previousStudents, updatedStudents };
     },
     onError: (err, variables, context) => {
-      console.log('>>> deleteStudentMutate  err', err);
+      console.log('deleteStudentMutate  err', err);
+      debugger;
       queryClient.setQueryData<StudentInterface[]>(['students'], context?.previousStudents);
     },
     // обновляем данные в случаи успешного выполнения mutationFn: async (studentId: number) => deleteStudentApi(studentId),
     onSuccess: async (studentId, variables, { previousStudents }) => {
+      console.log('deleteStudentMutate  onSuccess', studentId);
+      debugger;
+
       await queryClient.cancelQueries({ queryKey: ['students'] });
       // вариант 1 - запрос всех записей
       // refetch();
@@ -97,15 +104,15 @@ const useStudents = (): StudentsHookInterface => {
     // обновляем данные в случаи успешного выполнения mutationFn: async (student: StudentInterface) => addStudentApi(student)
     onSuccess: async (newStudent, variables, { previousStudents }) => {
       refetch();
-      await queryClient.cancelQueries({ queryKey: ['students'] });
+      // await queryClient.cancelQueries({ queryKey: ['students'] });
 
-      if (!previousStudents) {
-        queryClient.setQueryData<StudentInterface[]>(['students'], [newStudent]);
-        return;
-      }
+      // if (!previousStudents) {
+      //   queryClient.setQueryData<StudentInterface[]>(['students'], [newStudent]);
+      //   return;
+      // }
 
-      const updatedStudents = [...previousStudents.filter(s => s.id !== -1), newStudent];
-      queryClient.setQueryData<StudentInterface[]>(['students'], updatedStudents);
+      // const updatedStudents = [...previousStudents.filter(s => s.id !== -1), newStudent];
+      // queryClient.setQueryData<StudentInterface[]>(['students'], updatedStudents);
     },
   });
 
