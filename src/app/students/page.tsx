@@ -1,3 +1,4 @@
+
 import Students from '@/components/Students/Students';
 import Page from '@/components/layout/Page/Page';
 import { META_DESCRIPTION, META_TITLE } from '@/constants/meta';

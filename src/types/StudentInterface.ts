@@ -8,6 +8,7 @@ interface StudentInterface {
   groupId: number;
   isDeleted?: boolean;
   isNew?: boolean;
+  
 };
 
 export default StudentInterface;

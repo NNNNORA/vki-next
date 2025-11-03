@@ -1,4 +1,4 @@
-'use client';
+
 
 import useStudents from '@/hooks/useStudents';
 import type StudentInterface from '@/types/StudentInterface';
