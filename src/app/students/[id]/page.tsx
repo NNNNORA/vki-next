@@ -1,31 +1,42 @@
-
 import { notFound } from 'next/navigation';
-import { useQuery } from '@tanstack/react-query';
-import { getStudentsApi } from '@/api/studentsApi';
-import type StudentInterface from '@/types/StudentInterface';
-import Student from '@/components/Students/Student';
-import { ReactElement } from 'react';
-export default async function StudentPage({
-  params,
-}: {
-  params: Promise<{ id: string }>; // ← теперь params — Promise!
-}): Promise<ReactElement> {
-  // ✅ Распаковываем params
-  const { id } = await params; // или: const { id } = React.use(params);
+import Student from '@/components/Student/Student';
+import Page from '@/components/layout/Page/Page';
+import { META_DESCRIPTION, META_TITLE } from '@/constants/meta';
+import { type Metadata } from 'next/types';
+import { getStudentByIdApi } from '@/api/studentsApi';
 
-  const studentId = Number(id);
-  if (isNaN(studentId) || studentId <= 0) {
-    notFound();
-  }
-
-  // ✅ Выполняем fetch на сервере
-  const students = await getStudentsApi();
-  const student = students.find((s: StudentInterface) => s.id === studentId);
-
-  if (!student || student.isDeleted) {
-    notFound();
-  }
-
-  // ✅ Student должен быть Server Component или обёрнут в Client Component
-  return <Student student={student} />;
+interface PageProps {
+  params: Promise<{ id: string }>;
 }
+
+export const generateMetadata = async ({ params }: PageProps): Promise<Metadata> => {
+  const { id } = await params;
+
+  const student = await getStudentByIdApi(id);
+
+  return {
+    title: student ? `${student.lastName} ${student.firstName} ${student.middleName} -- ${META_TITLE}` : `студент не найден -- ${META_TITLE}`,
+    description: META_DESCRIPTION,
+
+  };
+};
+
+interface PageProps {
+  params: Promise<{ id: string }>;
+}
+
+const StudentsPage = async ({ params }: PageProps): Promise<React.ReactNode> => {
+  const { id } = await params;
+  const student = await getStudentByIdApi(id);
+
+  if (!student) {
+    notFound();
+  }
+  return (
+    <Page>
+      <Student student={student} />
+    </Page>
+  );
+};
+
+export default StudentsPage;
