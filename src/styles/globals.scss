@@ -1,38 +1,47 @@
 @use './main';
 
-// 🌸 Цветовая схема: розовая
+// 🌸 Цветовая схема: нежная розово-фиолетовая палитра
 :root {
-  --color: #4a2a3a;                 // Тёмно-бордовый/фиолетово-розовый (основной текст)
-  --color2: #ffffff;                // Белый (фон/акценты)
-  --color3: #ff69b4;                // Ярко-розовый (ошибки, акценты)
-  
-  --background: #fff9fb;            // Очень светлый розоватый фон
-  --background2: #f8e9f0;           // Чуть насыщеннее фон для блоков
-  --background3: #ff69b4;           // Розовый для контрастных элементов
-  
-  --link-color: #ff69b4;            // Цвет ссылок и заголовков h3, h4
-  --current-color: #c71585;         // Тёмно-розовый для h1
-  --item-color: #4a2a3a;            // Цвет текста в миксинах
+  // Текст
+  --color: #4a2a3a;                    // Тёмный пурпурно-розовый (основной текст)
+  --color2: #ffffff;                   // Белый (для фона и акцентов)
+  --color3: #ff69b4;                   // Ярко-розовый (акценты, ошибки)
+
+  // Фоны
+  --background: #fff9fb;               // Нежно-розовый фон страницы
+  --background2: #f8e9f0;              // Чуть насыщенный фон для блоков/инпутов
+  --background3: #ffebf3;              // Светло-розовый для border и hover-эффектов
+
+  // Цвета интерфейса
+  --link-color: #ff69b4;               // Ярко-розовый для ссылок и подзаголовков
+  --current-color: #c71585;            // Тёмно-розовый для h1
+  --item-color: #4a2a3a;               // Основной цвет текста в миксинах
+
+  // Переходы
+  --transition: 0.25s ease;
 }
 
-// 🌙 Тёмная тема — розово-фиолетовая палитра
+// 🌙 Тёмная тема: глубокая розово-фиолетовая палитра
 @media (prefers-color-scheme: dark) {
   :root {
-    --color: #f8e9f0;               // Светлый розоватый текст
-    --color2: #0f0a0d;              // Почти чёрный фон
-    --color3: #ff85c2;              // Светло-розовый акцент
-    
-    --background: #1a0e15;          // Тёмно-фиолетовый фон
-    --background2: #2a1523;         // Тёмнее для карточек
-    --background3: #ff69b4;
-    
+    // Текст
+    --color: #f8e9f0;                  // Мягкий розоватый текст
+    --color2: #0f0a0d;                 // Почти чёрный фон страницы
+    --color3: #ff85c2;                 // Мягкий розовый акцент
+
+    // Фоны
+    --background: #1a0e15;             // Тёмно-фиолетовый фон страницы
+    --background2: #2a1523;            // Тёмнее для карточек и форм
+    --background3: #3a1e2e;            // Тёмно-розовый border
+
+    // Цвета интерфейса
     --link-color: #ff85c2;
     --current-color: #ff69b4;
     --item-color: #f8e9f0;
   }
 }
 
-/* ШРИФТЫ — оставляем как есть */
+/* 🔤 Шрифты */
 @font-face {
   font-family: 'PTSans';
   src: local('PTSans'),
@@ -65,78 +74,82 @@
   font-style: normal;
 }
 
-/* БАЗОВЫЕ СТИЛИ */
+/* 🧱 Общие стили */
 body {
   margin: 0;
   font-family: 'PTSans', sans-serif;
   color: var(--color);
   background-color: var(--background);
   font-size: 18px;
-  // @media #{main.$mob} { font-size: main.vwMax(14px); }
+  line-height: 1.6;
 }
 
 input,
-select {
+select,
+textarea {
   font-family: 'PTSans', sans-serif;
   font-size: 18px;
   color: var(--color);
   background-color: var(--background2);
   border: 1px solid var(--background3);
-  border-radius: 6px;
-  padding: 8px 12px;
+  border-radius: 8px;
+  padding: 10px 14px;
+  transition: border-color var(--transition), background-color var(--transition);
+
+  &:focus {
+    outline: none;
+    border-color: var(--link-color);
+    box-shadow: 0 0 0 2px rgba(255, 105, 180, 0.2);
+  }
 }
 
-/* МИКСИН */
-@mixin commons {
+/* 🎨 Миксин для общих стилей заголовков */
+@mixin heading-style {
   font-family: 'PTSans', sans-serif;
   color: var(--item-color);
-  font-weight: 500;
+  font-weight: 700;
+  margin-top: 1.5em;
+  margin-bottom: 0.75em;
+  line-height: 1.2;
 }
 
-/* ЗАГОЛОВКИ */
+/* 📝 Заголовки */
 h1 {
-  @include commons;
+  @include heading-style;
   font-size: 42px;
-  font-weight: bold;
   color: var(--current-color);
-  // @media #{main.$mob} { font-size: main.vwMax(24px); }
 }
 
 h2 {
-  @include commons;
+  @include heading-style;
   font-size: 32px;
-  font-weight: bold;
-  // @media #{main.$mob} { font-size: main.vwMax(20px); }
 }
 
 h3 {
-  @include commons;
+  @include heading-style;
   font-size: 24px;
-  font-weight: bold;
   color: var(--link-color);
-  // @media #{main.$mob} { font-size: main.vwMax(18px); }
 }
 
 h4 {
-  @include commons;
+  @include heading-style;
   font-size: 20px;
-  font-weight: bold;
   color: var(--link-color);
-  // @media #{main.$mob} { font-size: main.vwMax(18px); }
 }
 
-/* ССЫЛКИ */
+/* 🔗 Ссылки */
 a {
   &:link,
   &:visited {
     color: var(--link-color);
     text-decoration: none;
-    transition: color 0.2s ease;
+    transition: color var(--transition), text-decoration var(--transition);
   }
-  
+
   &:hover,
   &:focus {
     color: var(--current-color);
     text-decoration: underline;
+    outline: none;
   }
 }
